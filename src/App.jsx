@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import Lenis from 'lenis';
 import {
   Mail,
   ExternalLink,
@@ -29,6 +30,8 @@ import {
 } from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 import ShaderBackground from './components/ui/shader-background';
+import Magnetic from './components/ui/magnetic-button';
+import Reveal from './components/ui/reveal';
 import bgImg from './assets/portfolio_background_light_illustration_1777826840178.png';
 
 const Github = ({ className }) => (
@@ -129,7 +132,9 @@ const Navbar = () => {
 
       <div className="flex items-center gap-2">
         <a href="#projects" className="px-6 py-3 bg-black/5 hover:bg-black/10 rounded-full text-xs uppercase tracking-widest transition-all text-black">Projects</a>
-        <a href="#contact" className="px-6 py-3 bg-black text-white rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all">Let's Talk</a>
+        <Magnetic>
+          <a href="#contact" className="px-6 py-3 bg-black text-white rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all">Let's Talk</a>
+        </Magnetic>
       </div>
     </nav>
   );
@@ -152,21 +157,25 @@ const Hero = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               Available for work
             </div>
-            <h1 className="text-6xl md:text-8xl font-serif leading-[0.9] mb-8 group-hover:tracking-tight transition-all duration-700">
-              Kshamya Amin.<br />
-              <span className="opacity-70 text-4xl md:text-5xl">Full Stack Developer|</span>
-            </h1>
+            <Reveal>
+              <h1 className="text-6xl md:text-8xl font-serif leading-[0.9] mb-8 group-hover:tracking-tight transition-all duration-700">
+                Kshamya Amin.<br />
+                <span className="opacity-70 text-4xl md:text-5xl">Full Stack Developer|</span>
+              </h1>
+            </Reveal>
             <p className="text-text-secondary text-2xl max-w-xl font-normal leading-relaxed mb-12">
               Detail-oriented Computer Science graduate building practical, scalable solutions with Python, Java, JavaScript, and SQL.
             </p>
           </div>
 
-          <button className="btn-primary w-fit group">
-            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center -ml-6 mr-2 group-hover:rotate-45 transition-transform duration-500">
-              <ArrowUpRight className="text-white w-5 h-5" />
-            </div>
-            Discover My Work
-          </button>
+          <Magnetic>
+            <button className="btn-primary w-fit group">
+              <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center -ml-6 mr-2 group-hover:rotate-45 transition-transform duration-500">
+                <ArrowUpRight className="text-white w-5 h-5" />
+              </div>
+              Discover My Work
+            </button>
+          </Magnetic>
         </motion.div>
 
         {/* Info Card */}
@@ -181,7 +190,9 @@ const Hero = () => {
           </div>
 
           <div>
-            <h3 className="text-3xl font-serif mb-6">Education</h3>
+            <Reveal delay={0.4}>
+              <h3 className="text-3xl font-serif mb-6 text-black">Education</h3>
+            </Reveal>
             <p className="text-text-secondary text-lg leading-relaxed max-w-sm">
               <span className="text-black font-medium">Master of Computer Applications (MCA)</span> at St. Agnes College (Autonomous).
             </p>
@@ -259,38 +270,85 @@ const SkillBar = ({ name, level, delay }) => (
   </motion.div>
 );
 
-const ProjectCard = ({ title, description, tags, icon: Icon, image, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5, delay }}
-    whileHover={{ y: -10 }}
-    className="group relative light-card rounded-3xl overflow-hidden"
-  >
-    <div className={`h-52 bg-bg-light relative overflow-hidden flex items-center justify-center`}>
-      {image ? (
-        <img src={image} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-      ) : (
-        <Icon className="w-20 h-20 text-accent-blue opacity-10 group-hover:scale-110 transition-transform duration-700" />
-      )}
-      <div className="absolute inset-0 bg-accent-blue/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-    </div>
-    <div className="p-8">
-      <h3 className="text-2xl font-bold mb-3 text-text-main group-hover:text-accent-blue transition-colors">{title}</h3>
-      <p className="text-text-secondary mb-6 text-sm leading-relaxed">{description}</p>
-      <div className="flex flex-wrap gap-2 mb-8">
-        {tags.map(tag => (
-          <span key={tag} className="px-3 py-1 bg-bg-light rounded-full text-[10px] font-bold text-text-secondary uppercase tracking-wider border border-border-light">{tag}</span>
-        ))}
+const ProjectCard = ({ title, description, tags, icon: Icon, image, delay, className = "" }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
+
+  function handleMouseMove(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+    mouseX.set(x);
+    mouseY.set(y);
+  }
+
+  function handleMouseLeave() {
+    mouseX.set(0);
+    mouseY.set(0);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      className={`group relative overflow-hidden rounded-[3.5rem] bg-black ${className} transition-shadow hover:shadow-2xl hover:shadow-accent-blue/20`}
+    >
+      {/* Image Background */}
+      <div className="absolute inset-0 z-0" style={{ transform: "translateZ(-50px)" }}>
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-60 transition-all duration-1000 ease-out"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
       </div>
-      <div className="flex items-center space-x-4">
-        <a href="#" className="text-text-secondary hover:text-accent-blue transition-colors"><Github className="w-5 h-5" /></a>
-        <a href="#" className="text-text-secondary hover:text-accent-blue transition-colors"><ExternalLink className="w-5 h-5" /></a>
+
+      {/* Content */}
+      <div className="relative z-10 h-full flex flex-col justify-end p-12" style={{ transform: "translateZ(50px)" }}>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {tags.map(tag => (
+            <span key={tag} className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[9px] font-black text-white uppercase tracking-[0.2em] border border-white/10">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <h3 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-[0.9] tracking-tighter">
+          {title}
+        </h3>
+
+        <p className="text-gray-400 text-base leading-relaxed mb-10 line-clamp-3 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-8 group-hover:translate-y-0 max-w-md">
+          {description}
+        </p>
+
+        <div className="flex items-center gap-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100">
+          <Magnetic>
+            <a href="#" className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-accent-blue hover:scale-110 transition-all">
+              <Github className="w-6 h-6" />
+            </a>
+          </Magnetic>
+          <Magnetic>
+            <a href="#" className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-accent-blue hover:scale-110 transition-all">
+              <ExternalLink className="w-6 h-6" />
+            </a>
+          </Magnetic>
+        </div>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -299,9 +357,34 @@ const App = () => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
+  const watermarkY = useTransform(scrollYProgress, [0, 1], [0, -500]);
+
   useEffect(() => {
+    // Initialize Lenis
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
     const timer = setTimeout(() => setLoading(false), 2500);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      lenis.destroy();
+    };
   }, []);
 
   const handleSubmit = async (e) => {
@@ -309,9 +392,9 @@ const App = () => {
     setIsSubmitting(true);
 
     const formData = new FormData(e.target);
-    
+
     try {
-      const response = await fetch("https://formspree.io/f/kshamyaamin26@gmail.com", {
+      const response = await fetch("https://formspree.io/f/kshamyaamin19@gmail.com", {
         method: "POST",
         body: formData,
         headers: {
@@ -341,29 +424,32 @@ const App = () => {
       className="bg-white selection:bg-accent-blue/10"
     >
       {/* Background Image Wrapper */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-60 overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-30 overflow-hidden">
         <img
           src={bgImg}
           alt="background"
-          className="w-full h-full object-cover scale-110 blur-[2px] brightness-110"
+          className="w-full h-full object-cover scale-110 blur-[1px] brightness-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-transparent to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/40 to-white"></div>
       </div>
 
       {/* Large Background Name Watermark */}
-      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden select-none">
-        <span className="text-[22vw] font-serif font-black text-black/[0.04] uppercase tracking-tighter whitespace-nowrap">
+      <motion.div
+        style={{ y: watermarkY }}
+        className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden select-none"
+      >
+        <span className="text-[22vw] font-serif font-black text-black/[0.02] uppercase tracking-tighter whitespace-nowrap">
           Kshamya
         </span>
-      </div>
+      </motion.div>
 
       {/* Progress Bar */}
       <motion.div className="fixed top-0 left-0 right-0 h-1 bg-accent-blue z-[100] origin-left shadow-[0_0_10px_#2563eb]" style={{ scaleX }} />
 
       <div className="fixed left-8 bottom-0 z-40 hidden lg:flex flex-col items-center space-y-8 pb-10">
-        <a href="https://github.com/KshamyaAmin" target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Github /></a>
-        <a href="https://linkedin.com/in/kshamya-amin" target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Linkedin /></a>
-        <a href="mailto:kshamyaamin19@gmail.com" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Mail /></a>
+        <Magnetic><a href="https://github.com/KshamyaAmin" target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Github /></a></Magnetic>
+        <Magnetic><a href="https://linkedin.com/in/kshamya-amin" target="_blank" rel="noreferrer" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Linkedin /></a></Magnetic>
+        <Magnetic><a href="mailto:kshamyaamin19@gmail.com" className="text-text-secondary hover:text-accent-blue transition-all hover:-translate-y-1"><Mail /></a></Magnetic>
         <div className="w-px h-32 bg-gradient-to-t from-accent-blue to-transparent" />
       </div>
 
@@ -386,21 +472,23 @@ const App = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
               >
-                <h2 className="section-heading mb-8 uppercase tracking-tighter italic">
-                  Innovation & <br />
-                  <span className="text-accent-blue">Excellence.</span>
-                </h2>
-                <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-light">
-                  <p>I am Kshamya Amin, a Computer Science graduate driven by the challenge of building software that solves real-world problems. Based in Mangaluru, I focus on developing practical, scalable solutions.</p>
+                <Reveal>
+                  <h2 className="section-heading mb-8 uppercase tracking-tighter italic">
+                    Innovation & <br />
+                    <span className="text-accent-blue">Excellence.</span>
+                  </h2>
+                </Reveal>
+                <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-medium">
+                  <p>I am Kshamya Amin, a Computer Science graduate driven by the challenge of building software that solves real-world problems. Based in Udupi, I focus on developing practical, scalable solutions.</p>
                   <p>My approach combines strong programming fundamentals in Python, Java, and JavaScript with a passion for digital inclusion and user-friendly design.</p>
                 </div>
               </motion.div>
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { icon: Code2, title: 'Development', desc: 'Crafting robust logic.', color: 'text-accent-blue' },
-                  { icon: Layers, title: 'Architecture', desc: 'Scalable system design.', color: 'text-blue-400' },
-                  { icon: Zap, title: 'Performance', desc: 'Speed and efficiency.', color: 'text-yellow-600' },
-                  { icon: Search, title: 'Analysis', desc: 'Data-driven decisions.', color: 'text-green-600' }
+                  { icon: Monitor, title: 'Development', desc: 'Building real-world web applications using Python, JavaScript, and modern web technologies.', color: 'text-accent-blue' },
+                  { icon: Database, title: 'Backend Logic', desc: 'Designing and implementing backend systems using Flask, SQL, and structured logic.', color: 'text-blue-600' },
+                  { icon: LayoutGrid, title: 'UI & Experience', desc: 'Creating responsive and user-friendly interfaces with HTML, CSS, and JavaScript.', color: 'text-emerald-500' },
+                  { icon: Search, title: 'Problem Solving', desc: 'Applying logical thinking to solve real-world problems and improve application efficiency.', color: 'text-orange-500' }
                 ].map((feature, i) => (
                   <motion.div
                     key={i}
@@ -428,7 +516,9 @@ const App = () => {
 
               {/* Experience Column */}
               <div>
-                <h2 className="section-heading mb-16 tracking-tighter italic uppercase">Experience.</h2>
+                <Reveal>
+                  <h2 className="section-heading mb-16 tracking-tighter italic uppercase">Experience.</h2>
+                </Reveal>
                 <div className="space-y-8">
                   {[
                     { title: 'Software Developer Intern', company: 'Primesophic Technology', date: 'Jan 2026 – Present', desc: 'Developing full-stack solutions and contributing to scalable software architecture using modern technologies.' },
@@ -440,6 +530,7 @@ const App = () => {
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
                       className="bento-card !p-10 group"
                     >
                       <span className="text-accent-blue font-bold text-xs uppercase tracking-[0.3em] mb-4 block opacity-80">{exp.date}</span>
@@ -453,10 +544,12 @@ const App = () => {
 
               {/* Education Column */}
               <div>
-                <h2 className="section-heading mb-16 tracking-tighter italic uppercase text-right">Education.</h2>
+                <Reveal width="100%">
+                  <h2 className="section-heading mb-16 tracking-tighter italic uppercase text-right">Education.</h2>
+                </Reveal>
                 <div className="space-y-8">
                   {[
-                    { title: 'Master in Computer Applications (MCA)', company: 'St. Agnes College (Autonomous)', date: '2026 - Present' },
+                    { title: 'Master of Computer Applications (MCA)', company: 'St. Agnes College (Autonomous)', date: '2026 - Present' },
                     { title: 'Bachelor of Science (CS & Maths)', company: 'University College Mangaluru', date: '2021 - 2024' }
                   ].map((edu, i) => (
                     <motion.div
@@ -464,6 +557,7 @@ const App = () => {
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
                       className="bento-card !p-10 group text-right flex flex-col items-end"
                     >
                       <span className="text-accent-blue font-bold text-xs uppercase tracking-[0.3em] mb-4 block opacity-80">{edu.date}</span>
@@ -486,7 +580,9 @@ const App = () => {
         <section id="skills" className="py-32 px-6 bg-black/[0.01]">
           <div className="max-w-7xl mx-auto">
             <div className="mb-24 text-center">
-              <h2 className="section-heading mb-6 tracking-tighter uppercase italic">Technical Stack.</h2>
+              <Reveal width="100%">
+                <h2 className="section-heading mb-6 tracking-tighter uppercase italic">Technical Stack.</h2>
+              </Reveal>
               <p className="text-text-secondary text-xl font-light italic">Languages, frameworks, and tools I use to build.</p>
             </div>
 
@@ -556,7 +652,7 @@ const App = () => {
                 </div>
                 <h3 className="text-3xl font-serif mb-8 text-black">Certifications</h3>
                 <div className="flex flex-wrap gap-4">
-                  {['IoT Specialist', 'DSA Master', 'Web Development', 'Digital Productivity'].map(cert => (
+                  {['IoT Workshop', 'Web Development', 'Digital Productivity'].map(cert => (
                     <span key={cert} className="px-6 py-2.5 rounded-full bg-black/5 border border-black/5 text-xs font-bold uppercase tracking-widest text-text-secondary">
                       {cert}
                     </span>
@@ -570,10 +666,12 @@ const App = () => {
         {/* Projects Section */}
         <section id="projects" className="py-32 px-6">
           <div className="max-w-7xl mx-auto text-center mb-24">
-            <h2 className="section-heading mb-6 tracking-tighter italic uppercase">Project Work.</h2>
+            <Reveal width="100%">
+              <h2 className="section-heading mb-6 tracking-tighter italic uppercase">Project Work.</h2>
+            </Reveal>
             <p className="text-text-secondary max-w-2xl mx-auto text-lg font-light italic"></p>
           </div>
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-6 gap-8 auto-rows-[550px]">
             <ProjectCard
               title="Meri Panchayat"
               description="Public Issue Reporting Portal with Flask + SQLite backend, secure Email OTP, RBAC, and custom i18n engine for Kannada."
@@ -581,6 +679,7 @@ const App = () => {
               icon={Globe}
               image={meriPanchayatImg}
               delay={0.1}
+              className="lg:col-span-4"
             />
             <ProjectCard
               title="Smart Recipe Generator"
@@ -589,6 +688,7 @@ const App = () => {
               icon={ChefHat}
               image={smartRecipeImg}
               delay={0.2}
+              className="lg:col-span-2"
             />
             <ProjectCard
               title="Tetris Game"
@@ -597,6 +697,7 @@ const App = () => {
               icon={Zap}
               image={tetrisImg}
               delay={0.3}
+              className="lg:col-span-2"
             />
             <ProjectCard
               title="Book Store System"
@@ -605,6 +706,7 @@ const App = () => {
               icon={Database}
               image={bookstoreImg}
               delay={0.4}
+              className="lg:col-span-4"
             />
             <ProjectCard
               title="Student Stress Study"
@@ -613,6 +715,7 @@ const App = () => {
               icon={Search}
               image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop"
               delay={0.5}
+              className="lg:col-span-6"
             />
           </div>
         </section>
@@ -620,33 +723,39 @@ const App = () => {
         {/* Contact Section */}
         <section id="contact" className="py-32 px-6">
           <div className="max-w-7xl mx-auto">
-            <div className="glass-light p-12 md:p-24 rounded-[4rem] relative overflow-hidden">
+            <div className="bg-black/[0.01] backdrop-blur-3xl p-12 md:p-24 rounded-[4rem] border border-black/5 relative overflow-hidden">
               <div className="grid md:grid-cols-2 gap-20 items-center">
                 <div>
-                  <h2 className="text-8xl md:text-[10rem] font-serif mb-2 tracking-tighter leading-[0.8] text-black">Let's</h2>
-                  <h2 className="text-8xl md:text-[10rem] font-serif italic mb-12 tracking-tighter leading-[0.8] text-black/80">Connect.</h2>
+                  <Reveal>
+                    <h2 className="text-8xl md:text-[10rem] font-serif mb-2 tracking-tighter leading-[0.8] text-black">Let's</h2>
+                  </Reveal>
+                  <Reveal delay={0.4}>
+                    <h2 className="text-8xl md:text-[10rem] font-serif italic mb-12 tracking-tighter leading-[0.8] text-black/80">Connect.</h2>
+                  </Reveal>
                   <p className="text-text-secondary text-2xl mb-12 max-w-md font-light leading-relaxed">
                     Open for collaborations on full-stack website developments & portfolio projects. Based in India, working worldwide.
                   </p>
 
                   <div className="flex flex-wrap gap-4 items-center">
-                    <a href="mailto:kshamyaamin19@gmail.com" className="btn-primary py-5 px-10 rounded-full flex items-center gap-3 group">
-                      Send a Mail <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform" />
-                    </a>
+                    <Magnetic>
+                      <a href="mailto:kshamyaamin19@gmail.com" className="btn-primary py-5 px-10 rounded-full flex items-center gap-3 group">
+                        Send a Mail <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform" />
+                      </a>
+                    </Magnetic>
                     <div className="px-8 py-5 rounded-full border border-black/10 text-lg font-medium text-black bg-white/5 backdrop-blur-sm">
                       +91 99808 91440
                     </div>
                   </div>
 
                   <div className="flex items-center space-x-6 mt-12">
-                    <a href="https://github.com/KshamyaAmin" target="_blank" rel="noreferrer" className="w-14 h-14 glass-light rounded-2xl flex items-center justify-center hover:scale-110 hover:text-accent-blue transition-all text-text-main"><Github /></a>
-                    <a href="https://linkedin.com/in/kshamya-amin" target="_blank" rel="noreferrer" className="w-14 h-14 glass-light rounded-2xl flex items-center justify-center hover:scale-110 hover:text-accent-blue transition-all text-text-main"><Linkedin /></a>
+                    <Magnetic><a href="https://github.com/KshamyaAmin" target="_blank" rel="noreferrer" className="w-14 h-14 bg-black/5 backdrop-blur-xl border border-black/10 rounded-2xl flex items-center justify-center hover:scale-110 hover:text-accent-blue transition-all text-text-main"><Github /></a></Magnetic>
+                    <Magnetic><a href="https://linkedin.com/in/kshamya-amin" target="_blank" rel="noreferrer" className="w-14 h-14 bg-black/5 backdrop-blur-xl border border-black/10 rounded-2xl flex items-center justify-center hover:scale-110 hover:text-accent-blue transition-all text-text-main"><Linkedin /></a></Magnetic>
                   </div>
                 </div>
 
                 <form
                   onSubmit={handleSubmit}
-                  action="https://formspree.io/f/kshamyaamin26@gmail.com"
+                  action="https://formspree.io/f/kshamyaamin19@gmail.com"
                   method="POST"
                   className="space-y-8 p-10 rounded-[3rem] bg-black/5 border border-black/10 relative"
                 >
@@ -659,7 +768,7 @@ const App = () => {
                       <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mb-6">
                         <ShieldCheck className="text-white w-8 h-8" />
                       </div>
-                      <h3 className="text-2xl font-serif mb-2">Message Sent!</h3>
+                      <h3 className="text-2xl font-serif mb-2 text-black">Message Sent!</h3>
                       <p className="text-text-secondary">Thank you, Kshamya will get back to you soon.</p>
                     </motion.div>
                   )}
@@ -675,15 +784,17 @@ const App = () => {
                     <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary ml-1">Message</label>
                     <textarea name="message" required rows="4" placeholder="Tell me about your project..." className="w-full bg-black/5 border border-black/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent-blue transition-colors resize-none text-text-main placeholder:text-text-secondary/50"></textarea>
                   </div>
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    whileHover={{ scale: isSubmitting ? 1 : 1.02, backgroundColor: isSubmitting ? '#000' : '#2563eb', color: '#fff' }}
-                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                    className={`w-full bg-black text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-accent-blue/10 uppercase tracking-widest text-sm ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                  >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </motion.button>
+                  <Magnetic>
+                    <motion.button
+                      type="submit"
+                      disabled={isSubmitting}
+                      whileHover={{ scale: isSubmitting ? 1 : 1.02, backgroundColor: isSubmitting ? '#000' : '#2563eb', color: '#fff' }}
+                      whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                      className={`w-full bg-black text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-accent-blue/10 uppercase tracking-widest text-sm ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    >
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </motion.button>
+                  </Magnetic>
                 </form>
               </div>
             </div>
@@ -696,18 +807,22 @@ const App = () => {
           <div className="grid md:grid-cols-3 gap-16 mb-24">
             {/* Column 1: Intro */}
             <div>
-              <h3 className="text-2xl font-serif mb-8 tracking-tight">Kshamya Portfolio</h3>
+              <Reveal>
+                <h3 className="text-2xl font-serif mb-8 tracking-tight">Kshamya Portfolio</h3>
+              </Reveal>
               <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-sm">
                 Thank you for visiting my personal portfolio website. Connect with me over socials.
               </p>
-              <div className="text-xl font-serif italic text-gray-300">
-                Keep Rising 🚀
+              <div className="text-xl font-serif italic text-gray-200">
+                Turning ideas into interactive realities.
               </div>
             </div>
 
             {/* Column 2: Quick Links */}
             <div>
-              <h3 className="text-2xl font-serif mb-8 tracking-tight">Quick Links</h3>
+              <Reveal>
+                <h3 className="text-2xl font-serif mb-8 tracking-tight">Quick Links</h3>
+              </Reveal>
               <ul className="space-y-4">
                 {[
                   { name: 'Home', href: '#home' },
@@ -730,56 +845,54 @@ const App = () => {
 
             {/* Column 3: Contact Info */}
             <div>
-              <h3 className="text-2xl font-serif mb-8 tracking-tight">Contact Info</h3>
+              <Reveal>
+                <h3 className="text-2xl font-serif mb-8 tracking-tight">Contact Info</h3>
+              </Reveal>
               <div className="space-y-6 mb-10">
-                <a href="mailto:kshamyaamin26@gmail.com" className="flex items-center gap-4 text-gray-400 hover:text-white transition-colors">
+                <a href="mailto:kshamyaamin19@gmail.com" className="flex items-center gap-4 text-gray-400 hover:text-white transition-colors">
                   <Mail className="w-5 h-5 text-accent-blue" />
-                  <span className="font-medium">kshamyaamin26@gmail.com</span>
+                  <span className="font-medium">kshamyaamin19@gmail.com</span>
                 </a>
                 <div className="flex items-center gap-4 text-gray-400">
                   <MapPin className="w-5 h-5 text-accent-blue" />
-                  <span className="font-medium">Mangaluru, India - 575002</span>
+                  <span className="font-medium">Udupi, Karnataka</span>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 {[
                   { icon: Linkedin, href: 'https://linkedin.com/in/kshamya-amin' },
                   { icon: Github, href: 'https://github.com/KshamyaAmin' },
-                  { icon: Mail, href: 'mailto:kshamyaamin26@gmail.com' },
-                  { icon: Zap, href: '#' } // Placeholder for Twitter/X or similar
+                  { icon: Mail, href: 'mailto:kshamyaamin19@gmail.com' },
                 ].map((social, i) => (
-                  <a
-                    key={i}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent-blue hover:text-white transition-all hover:-translate-y-1"
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
+                  <Magnetic key={i}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center hover:bg-accent-blue hover:text-white transition-all hover:-translate-y-1"
+                    >
+                      <social.icon className="w-5 h-5" />
+                    </a>
+                  </Magnetic>
                 ))}
               </div>
-            </div>
-          </div>
-
-          <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-gray-500 font-medium tracking-tight">
-            <div className="flex items-center gap-2">
-              Designed With <Heart className="w-4 h-4 text-red-500 fill-red-500" /> By <span className="text-white">Kshamya Amin</span>
             </div>
           </div>
         </div>
       </footer>
 
       {/* Back to Top */}
-      <motion.button
-        id="back-to-top"
-        whileHover={{ scale: 1.1, y: -5 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-10 right-10 w-16 h-16 bg-white text-text-main rounded-2xl flex items-center justify-center shadow-2xl z-[90] border border-border-light transition-all"
-      >
-        <ChevronUp />
-      </motion.button>
+      <Magnetic>
+        <motion.button
+          id="back-to-top"
+          whileHover={{ scale: 1.1, y: -5 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-10 right-10 w-16 h-16 bg-white text-text-main rounded-2xl flex items-center justify-center shadow-2xl z-[90] border border-border-light transition-all"
+        >
+          <ChevronUp className="w-6 h-6" />
+        </motion.button>
+      </Magnetic>
     </motion.div>
   );
 };

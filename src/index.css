@@ -45,10 +45,10 @@
 @theme {
   --color-bg-main: #ffffff;
   --color-card-bg: rgba(0, 0, 0, 0.02);
-  --color-text-main: #0a0a0c;
-  --color-text-secondary: rgba(0, 0, 0, 0.6);
-  --color-accent-blue: #2563eb;
-  --color-border-subtle: rgba(0, 0, 0, 0.08);
+  --color-text-main: #020617; /* Darkest Navy */
+  --color-text-secondary: #334155; /* Slate 700 - Much darker */
+  --color-accent-blue: #1d4ed8; /* Blue 700 - Deeper blue */
+  --color-border-subtle: rgba(0, 0, 0, 0.12);
 
   --font-serif: "Bricolage Grotesque", serif;
   --font-sans: "Inter", sans-serif;
@@ -69,23 +69,31 @@
 
 @layer components {
   .bento-card {
-    @apply bg-black/[0.03] backdrop-blur-xl border border-black/5 rounded-[2.5rem] p-10 transition-all duration-500 hover:bg-black/[0.05] hover:border-black/10;
+    @apply bg-black/[0.02] backdrop-blur-xl border border-black/[0.05] rounded-[2.5rem] p-10 transition-all duration-500 hover:bg-black/[0.04] hover:border-black/10 shadow-xl shadow-black/[0.02];
   }
 
   .pill-nav {
-    @apply fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/40 backdrop-blur-2xl border border-black/5 rounded-full px-6 py-3 flex items-center gap-8 shadow-xl;
+    @apply fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-white/70 backdrop-blur-2xl border border-black/5 rounded-full px-6 py-3 flex items-center gap-8 shadow-xl;
   }
 
   .badge {
-    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold uppercase tracking-widest text-emerald-600;
+    @apply inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-600/10 border border-blue-600/20 text-[10px] font-bold uppercase tracking-widest text-blue-700;
   }
   
   .btn-primary {
-    @apply bg-black text-white px-8 py-3 rounded-full font-bold text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2;
+    @apply bg-black text-white px-8 py-3 rounded-full font-bold text-sm transition-all hover:scale-105 active:scale-95 flex items-center gap-2 shadow-lg shadow-black/10;
   }
 
   .btn-secondary {
     @apply bg-black/5 text-black border border-black/5 px-8 py-3 rounded-full font-bold text-sm transition-all hover:bg-black/10;
+  }
+
+  .light-card {
+     @apply bg-black/[0.01] backdrop-blur-lg border border-black/[0.03] p-6 rounded-3xl transition-all hover:bg-black/[0.03];
+  }
+
+  .section-heading {
+    @apply text-5xl md:text-7xl font-serif leading-[0.9] text-black;
   }
 }
 
@@ -93,11 +101,11 @@
   position: fixed;
   inset: 0;
   background-image: 
-    linear-gradient(#E5E7EB 0.5px, transparent 0.5px),
-    linear-gradient(90deg, #E5E7EB 0.5px, transparent 0.5px);
+    linear-gradient(rgba(0, 0, 0, 0.03) 0.5px, transparent 0.5px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 0.5px, transparent 0.5px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse at center, black, transparent 90%);
-  opacity: 0.4;
+  opacity: 0.3;
   pointer-events: none;
   z-index: -1;
 }
@@ -106,12 +114,14 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F9FAFB;
+  background: #ffffff;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: #e2e8f0;
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+  background: #cbd5e1;
 }
+
+
