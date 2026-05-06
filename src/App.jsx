@@ -121,8 +121,10 @@ const LoadingScreen = () => {
 };
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-transparent">
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-white/10 backdrop-blur-md lg:bg-transparent">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center backdrop-blur-md">
           <LayoutGrid className="w-5 h-5 text-black" />
@@ -130,12 +132,32 @@ const Navbar = () => {
         <span className="font-serif font-bold text-lg tracking-tight text-black">Kshamya.</span>
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* Desktop Menu */}
+      <div className="hidden md:flex items-center gap-4">
         <a href="#projects" className="px-6 py-3 bg-black/5 hover:bg-black/10 rounded-full text-xs uppercase tracking-widest transition-all text-black">Projects</a>
+        <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" className="px-6 py-3 bg-accent-blue/10 hover:bg-accent-blue/20 rounded-full text-xs uppercase tracking-widest transition-all text-accent-blue font-bold">Resume</a>
         <Magnetic>
           <a href="#contact" className="px-6 py-3 bg-black text-white rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all">Let's Talk</a>
         </Magnetic>
       </div>
+
+      {/* Mobile Menu Button */}
+      <button onClick={() => setIsOpen(!isOpen)} className="md:hidden w-10 h-10 flex items-center justify-center bg-black text-white rounded-full">
+        {isOpen ? <ChevronUp className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+      </button>
+
+      {/* Mobile Menu Overlay */}
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute top-full left-6 right-6 mt-4 bg-white/95 backdrop-blur-2xl p-8 rounded-3xl border border-black/5 shadow-2xl flex flex-col gap-4 md:hidden"
+        >
+          <a href="#projects" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black/5 rounded-2xl text-center text-xs uppercase tracking-widest font-bold">Projects</a>
+          <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-accent-blue/10 rounded-2xl text-center text-xs uppercase tracking-widest font-bold text-accent-blue">Resume</a>
+          <a href="#contact" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black text-white rounded-2xl text-center text-xs uppercase tracking-widest font-bold">Let's Talk</a>
+        </motion.div>
+      )}
     </nav>
   );
 };
@@ -483,7 +505,7 @@ const App = () => {
                   <p>My approach combines strong programming fundamentals in Python, Java, and JavaScript with a passion for digital inclusion and user-friendly design.</p>
                 </div>
               </motion.div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   { icon: Monitor, title: 'Development', desc: 'Building real-world web applications using Python, JavaScript, and modern web technologies.', color: 'text-accent-blue' },
                   { icon: Database, title: 'Backend Logic', desc: 'Designing and implementing backend systems using Flask, SQL, and structured logic.', color: 'text-blue-600' },
@@ -492,10 +514,14 @@ const App = () => {
                 ].map((feature, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{
+                      duration: 0.8,
+                      delay: i * 0.15,
+                      ease: [0.21, 0.47, 0.32, 0.98]
+                    }}
                     whileHover={{ y: -5, scale: 1.02 }}
                     className="light-card p-8 rounded-3xl group"
                   >
@@ -586,37 +612,68 @@ const App = () => {
               <p className="text-text-secondary text-xl font-light italic">Languages, frameworks, and tools I use to build.</p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            <div className="grid lg:grid-cols-3 gap-8">
               {[
-                { name: 'Python', icon: 'python' },
-                { name: 'Java', icon: 'java' },
-                { name: 'JavaScript', icon: 'js' },
-                { name: 'HTML5', icon: 'html' },
-                { name: 'CSS3', icon: 'css' },
-                { name: 'SQL', icon: 'mysql' },
-                { name: 'React', icon: 'react' },
-                { name: 'Tailwind', icon: 'tailwind' },
-                { name: 'Flask', icon: 'flask' },
-                { name: 'VS Code', icon: 'vscode' },
-                { name: 'PyCharm', icon: 'pycharm' },
-              ].map((skill, i) => (
+                {
+                  category: "Frontend",
+                  skills: [
+                    { name: 'HTML5', icon: 'html' },
+                    { name: 'CSS3', icon: 'css' },
+                    { name: 'React', icon: 'react' },
+                    { name: 'JavaScript', icon: 'js' },
+                    { name: 'Tailwind', icon: 'tailwind' }
+                  ]
+                },
+                {
+                  category: "Backend & Data",
+                  skills: [
+                    { name: 'Python', icon: 'python' },
+                    { name: 'Java', icon: 'java' },
+                    { name: 'SQL', icon: 'mysql' },
+                    { name: 'Flask', icon: 'flask' }
+                  ]
+                },
+                {
+                  category: "Tools & Others",
+                  skills: [
+                    { name: 'VS Code', icon: 'vscode' },
+                    { name: 'PyCharm', icon: 'pycharm' },
+                    { name: 'Git', icon: 'git' },
+                    { name: 'Canva', icon: 'canva', customIcon: 'https://api.iconify.design/simple-icons:canva.svg?color=%2300C4CC' }
+                  ]
+                }
+              ].map((group, idx) => (
                 <motion.div
-                  key={skill.name}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  key={group.category}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  whileHover={{ y: -8, backgroundColor: 'rgba(0,0,0,0.03)' }}
-                  className="light-card p-8 rounded-[2.5rem] flex flex-col items-center justify-center gap-6 group transition-all duration-500 border border-black/5"
+                  transition={{ delay: idx * 0.1, duration: 0.8 }}
+                  className="light-card p-10 rounded-[3rem] border border-black/5 flex flex-col gap-10 hover:shadow-2xl hover:shadow-accent-blue/5 transition-all duration-500"
                 >
-                  <div className="w-16 h-16 relative flex items-center justify-center">
-                    <img
-                      src={`https://skillicons.dev/icons?i=${skill.icon}`}
-                      alt={skill.name}
-                      className="w-full h-full object-contain filter group-hover:drop-shadow-[0_0_15px_rgba(0,0,0,0.1)] transition-all duration-500"
-                    />
+                  <div className="flex items-center gap-4">
+                    <div className="w-1.5 h-8 bg-accent-blue rounded-full shadow-[0_0_15px_rgba(37,99,235,0.4)]"></div>
+                    <h3 className="text-2xl font-serif font-bold text-black">{group.category}</h3>
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-text-secondary group-hover:text-black transition-colors">{skill.name}</span>
+
+                  <div className="grid grid-cols-3 gap-8">
+                    {group.skills.map((skill, i) => (
+                      <motion.div
+                        key={skill.name}
+                        whileHover={{ y: -5 }}
+                        className="flex flex-col items-center gap-3 group/skill"
+                      >
+                        <div className="w-14 h-14 relative flex items-center justify-center p-3 bg-black/5 rounded-2xl group-hover/skill:bg-accent-blue/5 transition-colors">
+                          <img
+                            src={skill.customIcon || `https://skillicons.dev/icons?i=${skill.icon}`}
+                            alt={skill.name}
+                            className="w-full h-full object-contain filter group-hover/skill:drop-shadow-[0_0_8px_rgba(37,99,235,0.3)] transition-all duration-500"
+                          />
+                        </div>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-text-secondary group-hover/skill:text-black transition-colors text-center">{skill.name}</span>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
               ))}
             </div>
