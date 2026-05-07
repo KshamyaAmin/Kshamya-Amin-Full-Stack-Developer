@@ -376,6 +376,8 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  const [submittedName, setSubmittedName] = useState("");
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
@@ -416,7 +418,7 @@ const App = () => {
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("https://formspree.io/f/kshamyaamin19@gmail.com", {
+      const response = await fetch("https://formsubmit.co/ajax/kshamyaamin19@gmail.com", {
         method: "POST",
         body: formData,
         headers: {
@@ -425,14 +427,17 @@ const App = () => {
       });
 
       if (response.ok) {
+        setSubmittedName(formData.get("name"));
         setIsSubmitted(true);
+        setSubmitError(null);
         e.target.reset();
-        setTimeout(() => setIsSubmitted(false), 5000);
       } else {
-        console.error("Form submission failed");
+        const data = await response.json();
+        setSubmitError(data.error || "Form submission failed. Please check your email to activate Formspree.");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setSubmitError("Something went wrong. Please try again later.");
     } finally {
       setIsSubmitting(false);
     }
@@ -784,14 +789,13 @@ const App = () => {
               <div className="grid md:grid-cols-2 gap-20 items-center">
                 <div>
                   <Reveal>
-                    <h2 className="text-8xl md:text-[10rem] font-serif mb-2 tracking-tighter leading-[0.8] text-black">Let's</h2>
+                    <h2 className="text-6xl md:text-8xl font-serif mb-2 tracking-tighter leading-[0.8] text-black">Let's</h2>
                   </Reveal>
                   <Reveal delay={0.4}>
-                    <h2 className="text-8xl md:text-[10rem] font-serif italic mb-12 tracking-tighter leading-[0.8] text-black/80">Connect.</h2>
+                    <h2 className="text-6xl md:text-8xl font-serif italic mb-12 tracking-tighter leading-[0.8] text-black/80">Connect.</h2>
                   </Reveal>
                   <p className="text-text-secondary text-2xl mb-12 max-w-md font-light leading-relaxed">
-                    Open for collaborations on full-stack website developments & portfolio projects. Based in India, working worldwide.
-                  </p>
+                    Passionate about learning, building, and growing through real-world projects.</p>
 
                   <div className="flex flex-wrap gap-4 items-center">
                     <Magnetic>
@@ -812,21 +816,32 @@ const App = () => {
 
                 <form
                   onSubmit={handleSubmit}
-                  action="https://formspree.io/f/kshamyaamin19@gmail.com"
+                  action="https://formsubmit.co/kshamyaamin19@gmail.com"
                   method="POST"
                   className="space-y-8 p-10 rounded-[3rem] bg-black/5 border border-black/10 relative"
                 >
                   {isSubmitted && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="absolute inset-0 z-50 bg-white/90 backdrop-blur-md rounded-[3rem] flex flex-col items-center justify-center text-center p-8"
+                      initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+                      animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
+                      className="absolute inset-0 z-50 bg-white/80 rounded-[3rem] flex flex-col items-center justify-center text-center p-8 border border-emerald-500/20"
                     >
-                      <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mb-6">
-                        <ShieldCheck className="text-white w-8 h-8" />
-                      </div>
-                      <h3 className="text-2xl font-serif mb-2 text-black">Message Sent!</h3>
-                      <p className="text-text-secondary">Thank you, Kshamya will get back to you soon.</p>
+                      <motion.div 
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                        className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mb-8 shadow-lg shadow-emerald-500/30"
+                      >
+                        <ShieldCheck className="text-white w-10 h-10" />
+                      </motion.div>
+                      <h3 className="text-3xl font-serif mb-4 text-black">Message Sent Successfully!</h3>
+                      <p className="text-text-secondary text-lg mb-10 max-w-xs font-medium">Thank you, {submittedName}! Kshamya will get back to you shortly.</p>
+                      <button 
+                        onClick={() => setIsSubmitted(false)}
+                        className="px-8 py-3 bg-black text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-emerald-600 transition-colors"
+                      >
+                        Close
+                      </button>
                     </motion.div>
                   )}
                   <div className="space-y-3">
@@ -852,6 +867,16 @@ const App = () => {
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </motion.button>
                   </Magnetic>
+                  
+                  {submitError && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-500 text-xs font-bold text-center mt-4"
+                    >
+                      {submitError}
+                    </motion.p>
+                  )}
                 </form>
               </div>
             </div>
