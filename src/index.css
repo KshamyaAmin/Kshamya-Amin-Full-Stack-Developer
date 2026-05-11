@@ -69,7 +69,7 @@
 
 @layer components {
   .bento-card {
-    @apply bg-black/[0.02] backdrop-blur-xl border border-black/[0.05] rounded-[2.5rem] p-10 transition-all duration-500 hover:bg-black/[0.04] hover:border-black/10 shadow-xl shadow-black/[0.02];
+    @apply bg-black/[0.02] backdrop-blur-xl border border-black/[0.05] rounded-[2.5rem] p-6 md:p-10 transition-all duration-500 hover:bg-black/[0.04] hover:border-black/10 shadow-xl shadow-black/[0.02];
   }
 
   .pill-nav {
@@ -93,7 +93,7 @@
   }
 
   .section-heading {
-    @apply text-5xl md:text-7xl font-serif leading-[0.9] text-black;
+    @apply text-6xl md:text-8xl font-serif leading-[0.9] text-black;
   }
 }
 
