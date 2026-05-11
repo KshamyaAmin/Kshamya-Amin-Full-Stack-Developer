@@ -126,27 +126,29 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 flex justify-between items-center bg-white/10 backdrop-blur-md lg:bg-transparent">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center backdrop-blur-md">
-          <LayoutGrid className="w-5 h-5 text-black" />
+    <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-center bg-white/10 backdrop-blur-md lg:bg-transparent">
+      <div className="w-full max-w-[1600px] flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center backdrop-blur-md">
+            <LayoutGrid className="w-5 h-5 text-black" />
+          </div>
+          <span className="font-serif font-bold text-lg tracking-tight text-black">Kshamya.</span>
         </div>
-        <span className="font-serif font-bold text-lg tracking-tight text-black">Kshamya.</span>
-      </div>
 
-      {/* Desktop Menu */}
-      <div className="hidden md:flex items-center gap-4">
-        <a href="#projects" className="px-6 py-3 bg-black/5 hover:bg-black/10 rounded-full text-xs uppercase tracking-widest transition-all text-black">Projects</a>
-        <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" className="px-6 py-3 bg-accent-blue/10 hover:bg-accent-blue/20 rounded-full text-xs uppercase tracking-widest transition-all text-accent-blue font-bold">Resume</a>
-        <Magnetic>
-          <a href="#contact" className="px-6 py-3 bg-black text-white rounded-full font-bold text-xs uppercase tracking-widest hover:scale-105 transition-all">Let's Talk</a>
-        </Magnetic>
-      </div>
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-4">
+          <a href="#projects" className="px-6 py-3 bg-black/5 hover:bg-black/10 rounded-full text-base uppercase tracking-widest transition-all text-black font-medium">Projects</a>
+          <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" className="px-6 py-3 bg-accent-blue/10 hover:bg-accent-blue/20 rounded-full text-base uppercase tracking-widest transition-all text-accent-blue font-bold">Resume</a>
+          <Magnetic>
+            <a href="#contact" className="px-6 py-3 bg-black text-white rounded-full font-bold text-base uppercase tracking-widest hover:scale-105 transition-all">Let's Talk</a>
+          </Magnetic>
+        </div>
 
-      {/* Mobile Menu Button */}
-      <button onClick={() => setIsOpen(!isOpen)} className="md:hidden w-10 h-10 flex items-center justify-center bg-black text-white rounded-full">
-        {isOpen ? <ChevronUp className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-      </button>
+        {/* Mobile Menu Button */}
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden w-10 h-10 flex items-center justify-center bg-black text-white rounded-full">
+          {isOpen ? <ChevronUp className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
 
       {/* Mobile Menu Overlay */}
       {isOpen && (
@@ -155,9 +157,9 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           className="absolute top-full left-6 right-6 mt-4 bg-white/95 backdrop-blur-2xl p-8 rounded-3xl border border-black/5 shadow-2xl flex flex-col gap-4 md:hidden"
         >
-          <a href="#projects" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black/5 rounded-2xl text-center text-xs uppercase tracking-widest font-bold">Projects</a>
-          <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-accent-blue/10 rounded-2xl text-center text-xs uppercase tracking-widest font-bold text-accent-blue">Resume</a>
-          <a href="#contact" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black text-white rounded-2xl text-center text-xs uppercase tracking-widest font-bold">Let's Talk</a>
+          <a href="#projects" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black/5 rounded-2xl text-center text-base uppercase tracking-widest font-bold">Projects</a>
+          <a href="/resume.pdf" download="Kshamya_Amin_Resume.pdf" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-accent-blue/10 rounded-2xl text-center text-base uppercase tracking-widest font-bold text-accent-blue">Resume</a>
+          <a href="#contact" onClick={() => setIsOpen(false)} className="px-6 py-4 bg-black text-white rounded-2xl text-center text-base uppercase tracking-widest font-bold">Let's Talk</a>
         </motion.div>
       )}
     </nav>
@@ -166,8 +168,8 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen pt-40 pb-20 px-6 relative">
-      <div className="max-w-[1440px] mx-auto grid lg:grid-cols-12 gap-8">
+    <section id="home" className="pt-20 pb-8 px-6 relative">
+      <div className="max-w-[1600px] mx-auto grid lg:grid-cols-12 gap-8">
 
         {/* Main Hero Card */}
         <motion.div
@@ -177,19 +179,27 @@ const Hero = () => {
           className="lg:col-span-7 bento-card flex flex-col justify-between group"
         >
           <div>
-            <div className="badge mb-10">
+            <div className="badge mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              Available for work
+              <span className="text-xs uppercase font-bold tracking-widest">Available for work</span>
             </div>
             <Reveal>
-              <h1 className="text-6xl md:text-8xl font-serif leading-[0.9] mb-8 group-hover:tracking-tight transition-all duration-700">
+              <h1 className="text-5xl md:text-[5vw] lg:text-[6vw] font-serif leading-[0.85] mb-4 group-hover:tracking-tight transition-all duration-700">
                 Kshamya Amin.<br />
-                <span className="opacity-70 text-4xl md:text-5xl">Full Stack Developer|</span>
+                <span className="opacity-70 text-2xl md:text-[2.5vw] lg:text-[3vw] italic font-normal">Full Stack Developer|</span>
               </h1>
             </Reveal>
-            <p className="text-text-secondary text-2xl max-w-xl font-normal leading-relaxed mb-12">
-              Detail-oriented Computer Science graduate building practical, scalable solutions with Python, Java, JavaScript, and SQL.
+            <p className="text-text-secondary text-xl md:text-2xl max-w-2xl font-normal leading-relaxed mb-6">
+              Detail-oriented Computer Science graduate building practical, scalable solutions with Python, Java, JavaScript, and SQL. Currently focused on full-stack development and software architecture.
             </p>
+
+            <div className="flex flex-wrap gap-3 mb-8">
+              {['Python', 'Java', 'React', 'Flask', 'SQL', 'PostgreSQL'].map(tech => (
+                <span key={tech} className="px-4 py-2 rounded-xl bg-black/[0.03] text-xs font-bold uppercase tracking-widest text-text-secondary border border-black/5 group-hover:border-accent-blue/20 transition-colors">
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
 
           <Magnetic>
@@ -209,7 +219,7 @@ const Hero = () => {
           transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-5 bento-card flex flex-col justify-between relative overflow-hidden group"
         >
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-40 transition-all duration-1000 group-hover:scale-110"
             style={{ backgroundImage: `url(${stAgnesImg})` }}
           ></div>
@@ -219,15 +229,20 @@ const Hero = () => {
 
           <div className="relative z-10">
             <Reveal delay={0.4}>
-              <h3 className="text-3xl font-serif mb-6 text-black">Education</h3>
+              <h3 className="text-3xl font-serif mb-4 text-black">Education</h3>
             </Reveal>
-            <p className="text-text-secondary text-lg leading-relaxed max-w-sm">
-              <span className="text-black font-medium">Master of Computer Applications (MCA)</span> at St. Agnes College (Autonomous).
-            </p>
+            <div className="space-y-4">
+              <p className="text-text-secondary text-xl leading-relaxed max-w-sm">
+                <span className="text-black font-medium">Master of Computer Applications (MCA)</span> at St. Agnes College (Autonomous).
+              </p>
+              <p className="text-text-secondary text-base font-medium opacity-80">
+                Deepening expertise in Software Engineering, Advanced Web Technologies, and Data Structures.
+              </p>
+            </div>
           </div>
 
           <div className="pt-8 border-t border-black/5 flex justify-between items-center relative z-10">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-secondary">2026 — PRESENT</span>
+            <span className="text-sm font-bold uppercase tracking-[0.3em] text-text-secondary">2026 — PRESENT</span>
             <ArrowRight className="w-6 h-6 text-text-secondary" />
           </div>
 
@@ -242,9 +257,9 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-4 bento-card h-[280px] group overflow-hidden relative"
+          className="lg:col-span-4 bento-card h-[240px] group overflow-hidden relative"
         >
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-25 group-hover:opacity-50 transition-all duration-1000 group-hover:scale-110"
             style={{ backgroundImage: `url(${projectsBg})` }}
           ></div>
@@ -266,15 +281,18 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="lg:col-span-8 bento-card h-[280px] bg-gradient-to-br from-white/[0.08] to-transparent relative overflow-hidden group"
+          className="lg:col-span-8 bento-card h-[240px] bg-gradient-to-br from-white/[0.08] to-transparent relative overflow-hidden group"
         >
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
             style={{ backgroundImage: `url(${meriPanchayatImg})` }}
           ></div>
-          <div className="relative z-10 h-full flex flex-col justify-end">
+          <div className="relative z-10 h-full flex flex-col justify-end p-2">
             <div className="badge w-fit mb-4">Recent Project</div>
-            <h3 className="text-4xl font-serif">Meri Panchayat Portal</h3>
+            <h3 className="text-4xl font-serif mb-2">Meri Panchayat Portal</h3>
+            <p className="text-white/80 text-sm max-w-md font-medium line-clamp-2">
+              A comprehensive public issue reporting portal with multilingual support and secure authentication.
+            </p>
           </div>
         </motion.div>
 
@@ -329,17 +347,17 @@ const ProjectCard = ({ title, description, tags, icon: Icon, image, delay, githu
 
       {/* Content */}
       <div className="flex-1 flex flex-col p-8 pt-2">
-        <h3 className="text-2xl font-serif text-black mb-3 leading-tight tracking-tight">
+        <h3 className="text-3xl font-serif text-black mb-3 leading-tight tracking-tight">
           {title}
         </h3>
 
-        <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium line-clamp-3">
+        <p className="text-text-secondary text-base leading-relaxed mb-6 font-medium line-clamp-3">
           {description}
         </p>
 
         <div className="flex flex-wrap gap-2 mb-8">
           {tags.map(tag => (
-            <span key={tag} className="px-3 py-1 bg-black/[0.03] rounded-full text-[10px] font-bold text-text-secondary uppercase tracking-widest border border-black/5 group-hover:border-accent-blue/20 group-hover:text-accent-blue transition-colors">
+            <span key={tag} className="px-3 py-1 bg-black/[0.03] rounded-full text-xs font-bold text-text-secondary uppercase tracking-widest border border-black/5 group-hover:border-accent-blue/20 group-hover:text-accent-blue transition-colors">
               {tag}
             </span>
           ))}
@@ -495,13 +513,13 @@ const App = () => {
         <Hero />
 
         {/* About Section */}
-        <section id="about" className="min-h-screen py-32 px-6 flex items-center">
+        <section id="about" className="py-8 px-6 flex items-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[1440px] mx-auto w-full"
+            className="max-w-[1600px] mx-auto w-full"
           >
             <div className="grid md:grid-cols-2 gap-20 items-center">
               <div>
@@ -511,7 +529,7 @@ const App = () => {
                     <span className="text-accent-blue">Excellence.</span>
                   </h2>
                 </Reveal>
-                <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-medium">
+                <div className="space-y-6 text-text-secondary text-xl leading-relaxed font-medium">
                   <p>I am Kshamya Amin, a Computer Science graduate driven by the challenge of building software that solves real-world problems. Based in Udupi, I focus on developing practical, scalable solutions.</p>
                   <p>My approach combines strong programming fundamentals in Python, Java, and JavaScript with a passion for digital inclusion and user-friendly design.</p>
                 </div>
@@ -537,8 +555,8 @@ const App = () => {
                     className="light-card p-8 rounded-3xl group"
                   >
                     <feature.icon className={`${feature.color} w-10 h-10 mb-4 group-hover:scale-110 transition-transform`} />
-                    <h3 className="text-xl font-bold mb-2 uppercase tracking-tight text-text-main">{feature.title}</h3>
-                    <p className="text-text-secondary text-sm font-medium">{feature.desc}</p>
+                    <h3 className="text-2xl font-bold mb-2 uppercase tracking-tight text-text-main">{feature.title}</h3>
+                    <p className="text-text-secondary text-base font-medium">{feature.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -547,7 +565,7 @@ const App = () => {
         </section>
 
         {/* Experience & Education Section */}
-        <section id="journey" className="min-h-screen py-32 px-6 flex items-center bg-white/50">
+        <section id="journey" className="py-8 px-6 flex items-center bg-white/50">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -560,7 +578,7 @@ const App = () => {
               {/* Experience Column */}
               <div className="relative">
                 <Reveal>
-                  <h2 className="text-xs font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-50">Work Experience.</h2>
+                  <h2 className="text-3xl font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-80">Work Experience.</h2>
                 </Reveal>
 
                 {/* Vertical Line */}
@@ -568,7 +586,7 @@ const App = () => {
 
                 <div className="space-y-24 pl-12">
                   {[
-                    { title: 'Software Developer Intern', company: 'Primesophic Technology', date: 'Jan 2026 – Present', desc: 'Developing full-stack solutions and contributing to scalable software architecture using modern technologies.' },
+                    { title: 'Software Developer Intern', company: 'Primesophic Technology', date: 'Apr 2026 – Present', desc: 'Developing full-stack solutions and contributing to scalable software architecture using modern technologies.' },
                     { title: 'Web Development & Designing Intern', company: 'Oasis Infobyte (OIBSIP)', date: 'Nov 2025 – Dec 2025', desc: 'Designed responsive web interfaces using HTML, CSS, and JavaScript, ensuring UX consistency.' },
                     { title: 'Web Development Intern', company: 'Prodigy InfoTech', date: 'Aug 2025', desc: 'Built interactive and responsive web pages with a focus on clean UI design.' }
                   ].map((exp, i) => (
@@ -583,10 +601,10 @@ const App = () => {
                       {/* Timeline Dot */}
                       <div className="absolute -left-[54px] top-1.5 w-3 h-3 rounded-full bg-accent-blue shadow-[0_0_15px_rgba(37,99,235,0.8)] group-hover:scale-150 transition-transform duration-500" />
 
-                      <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{exp.date}</span>
+                      <span className="text-lg font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{exp.date}</span>
                       <h3 className="text-3xl font-serif mb-2 text-black leading-tight group-hover:text-accent-blue transition-colors">{exp.title}</h3>
-                      <p className="text-lg font-bold text-text-main mb-6">{exp.company}</p>
-                      <p className="text-text-secondary leading-relaxed max-w-md font-medium text-sm">{exp.desc}</p>
+                      <p className="text-2xl font-bold text-text-main mb-6">{exp.company}</p>
+                      <p className="text-text-secondary leading-relaxed max-w-md font-medium text-lg">{exp.desc}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -595,7 +613,7 @@ const App = () => {
               {/* Education Column */}
               <div className="relative">
                 <Reveal>
-                  <h2 className="text-xs font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-50 lg:text-right">Academic Journey.</h2>
+                  <h2 className="text-3xl font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-80 lg:text-right">Academic Journey.</h2>
                 </Reveal>
 
                 {/* Vertical Line for Mobile/Default */}
@@ -617,9 +635,9 @@ const App = () => {
                       {/* Timeline Dot */}
                       <div className="absolute -left-[54px] lg:-left-auto lg:-right-[54px] top-1.5 w-3 h-3 rounded-full bg-accent-blue shadow-[0_0_15px_rgba(37,99,235,0.8)] group-hover:scale-150 transition-transform duration-500" />
 
-                      <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{edu.date}</span>
+                      <span className="text-lg font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{edu.date}</span>
                       <h3 className="text-3xl font-serif mb-2 text-black leading-tight group-hover:text-accent-blue transition-colors">{edu.title}</h3>
-                      <p className="text-lg font-bold text-text-main mb-6">{edu.company}</p>
+                      <p className="text-2xl font-bold text-text-main mb-6">{edu.company}</p>
                     </motion.div>
                   ))}
                 </div>
@@ -630,19 +648,19 @@ const App = () => {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="min-h-screen py-32 px-6 bg-black/[0.01] flex items-center">
+        <section id="skills" className="py-8 px-6 bg-black/[0.01] flex items-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[1440px] mx-auto w-full"
+            className="max-w-[1600px] mx-auto w-full"
           >
             <div className="mb-24 text-center">
               <Reveal width="100%">
                 <h2 className="section-heading mb-6 tracking-tighter uppercase italic">Technical Stack.</h2>
               </Reveal>
-              <p className="text-text-secondary text-xl font-light italic">Languages, frameworks, and tools I use to build.</p>
+              <p className="text-text-secondary text-2xl font-light italic">Languages, frameworks, and tools I use to build.</p>
             </div>
 
             <div className="grid lg:grid-cols-3 gap-8">
@@ -703,7 +721,7 @@ const App = () => {
                             className="w-full h-full object-contain filter group-hover/skill:drop-shadow-[0_0_8px_rgba(37,99,235,0.3)] transition-all duration-500"
                           />
                         </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-text-secondary group-hover/skill:text-black transition-colors text-center">{skill.name}</span>
+                        <span className="text-[11px] font-black uppercase tracking-widest text-text-secondary group-hover/skill:text-black transition-colors text-center">{skill.name}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -754,13 +772,13 @@ const App = () => {
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="min-h-screen py-32 px-6 flex items-center">
+        <section id="projects" className="py-8 px-6 flex items-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[1440px] mx-auto w-full"
+            className="max-w-[1600px] mx-auto w-full"
           >
             <div className="text-center mb-24">
               <Reveal width="100%">
@@ -846,7 +864,7 @@ const App = () => {
                         Send a Mail <ArrowUpRight className="w-5 h-5 group-hover:rotate-45 transition-transform" />
                       </a>
                     </Magnetic>
-                    <div className="px-8 py-5 rounded-full border border-black/10 text-lg font-medium text-black bg-white/5 backdrop-blur-sm">
+                    <div className="px-8 py-5 rounded-full border border-black/10 text-xl font-medium text-black bg-white/5 backdrop-blur-sm">
                       +91 99808 91440
                     </div>
                   </div>
@@ -888,15 +906,15 @@ const App = () => {
                     </motion.div>
                   )}
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary ml-1">Full Name</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-text-secondary ml-1">Full Name</label>
                     <input name="name" required type="text" placeholder="Your Name" className="w-full bg-black/5 border border-black/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent-blue transition-colors text-text-main placeholder:text-text-secondary/50" />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary ml-1">Email Address</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-text-secondary ml-1">Email Address</label>
                     <input name="email" required type="email" placeholder="email@example.com" className="w-full bg-black/5 border border-black/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent-blue transition-colors text-text-main placeholder:text-text-secondary/50" />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-text-secondary ml-1">Message</label>
+                    <label className="text-xs font-black uppercase tracking-widest text-text-secondary ml-1">Message</label>
                     <textarea name="message" required rows="4" placeholder="Tell me about your project..." className="w-full bg-black/5 border border-black/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-accent-blue transition-colors resize-none text-text-main placeholder:text-text-secondary/50"></textarea>
                   </div>
                   <Magnetic>
@@ -915,7 +933,7 @@ const App = () => {
                     <motion.p
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="text-red-500 text-xs font-bold text-center mt-4"
+                      className="text-red-500 text-sm font-bold text-center mt-4"
                     >
                       {submitError}
                     </motion.p>
