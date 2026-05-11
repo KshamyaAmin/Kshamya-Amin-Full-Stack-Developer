@@ -32,7 +32,7 @@ import { useInView } from 'react-intersection-observer';
 import ShaderBackground from './components/ui/shader-background';
 import Magnetic from './components/ui/magnetic-button';
 import Reveal from './components/ui/reveal';
-import bgImg from './assets/portfolio_background_light_illustration_1777826840178.png';
+import bgImg from './assets/port-bc.png';
 
 const Github = ({ className }) => (
   <svg
@@ -75,6 +75,8 @@ import meriPanchayatImg from './assets/meri-panchayat.png';
 import smartRecipeImg from './assets/smart-recipe.png';
 import tetrisImg from './assets/tetris.png';
 import bookstoreImg from './assets/bookstore.png';
+import stAgnesImg from './assets/st agnes.jpg';
+import projectsBg from './assets/proce.png';
 
 // --- Components ---
 
@@ -165,7 +167,7 @@ const Navbar = () => {
 const Hero = () => {
   return (
     <section id="home" className="min-h-screen pt-40 pb-20 px-6 relative">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8">
+      <div className="max-w-[1440px] mx-auto grid lg:grid-cols-12 gap-8">
 
         {/* Main Hero Card */}
         <motion.div
@@ -191,12 +193,12 @@ const Hero = () => {
           </div>
 
           <Magnetic>
-            <button className="btn-primary w-fit group">
+            <a href="#projects" className="btn-primary w-fit group">
               <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center -ml-6 mr-2 group-hover:rotate-45 transition-transform duration-500">
                 <ArrowUpRight className="text-white w-5 h-5" />
               </div>
               Discover My Work
-            </button>
+            </a>
           </Magnetic>
         </motion.div>
 
@@ -205,13 +207,17 @@ const Hero = () => {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 bento-card flex flex-col justify-between relative overflow-hidden"
+          className="lg:col-span-5 bento-card flex flex-col justify-between relative overflow-hidden group"
         >
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-20 group-hover:opacity-40 transition-all duration-1000 group-hover:scale-110"
+            style={{ backgroundImage: `url(${stAgnesImg})` }}
+          ></div>
           <div className="absolute top-10 right-10 opacity-20 group-hover:scale-110 transition-transform duration-700">
             <Briefcase className="w-12 h-12" />
           </div>
 
-          <div>
+          <div className="relative z-10">
             <Reveal delay={0.4}>
               <h3 className="text-3xl font-serif mb-6 text-black">Education</h3>
             </Reveal>
@@ -220,13 +226,13 @@ const Hero = () => {
             </p>
           </div>
 
-          <div className="pt-8 border-t border-black/5 flex justify-between items-center">
+          <div className="pt-8 border-t border-black/5 flex justify-between items-center relative z-10">
             <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-secondary">2026 — PRESENT</span>
             <ArrowRight className="w-6 h-6 text-text-secondary" />
           </div>
 
           {/* Charmander Easter Egg */}
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-16 h-16 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity">
+          <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-16 h-16 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity z-10">
             <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/4.gif" alt="charmander" className="w-full h-full object-contain" />
           </div>
         </motion.div>
@@ -236,17 +242,23 @@ const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-4 bento-card h-[280px] group overflow-hidden"
+          className="lg:col-span-4 bento-card h-[280px] group overflow-hidden relative"
         >
-          <div className="flex justify-between items-start mb-12">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-accent-blue/20 transition-colors">
-              <Layers className="w-6 h-6 text-text-secondary group-hover:text-white" />
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-25 group-hover:opacity-50 transition-all duration-1000 group-hover:scale-110"
+            style={{ backgroundImage: `url(${projectsBg})` }}
+          ></div>
+          <div className="relative z-10 h-full flex flex-col">
+            <div className="flex justify-between items-start mb-12">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-accent-blue/20 transition-colors">
+                <Layers className="w-6 h-6 text-text-secondary group-hover:text-white" />
+              </div>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-text-secondary bg-white/5 px-4 py-1.5 rounded-full">Expand</span>
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-text-secondary bg-white/5 px-4 py-1.5 rounded-full">Expand</span>
-          </div>
-          <h4 className="text-2xl font-serif mb-2">Projects & Certs</h4>
-          <div className="text-6xl font-serif">
-            5<span className="text-accent-blue">+</span>
+            <h4 className="text-2xl font-serif mb-2">Projects & Certs</h4>
+            <div className="text-6xl font-serif">
+              5<span className="text-accent-blue">+</span>
+            </div>
           </div>
         </motion.div>
 
@@ -256,9 +268,12 @@ const Hero = () => {
           transition={{ delay: 0.3 }}
           className="lg:col-span-8 bento-card h-[280px] bg-gradient-to-br from-white/[0.08] to-transparent relative overflow-hidden group"
         >
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"></div>
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-40 grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+            style={{ backgroundImage: `url(${meriPanchayatImg})` }}
+          ></div>
           <div className="relative z-10 h-full flex flex-col justify-end">
-            <div className="badge w-fit mb-4">Featured Project</div>
+            <div className="badge w-fit mb-4">Recent Project</div>
             <h3 className="text-4xl font-serif">Meri Panchayat Portal</h3>
           </div>
         </motion.div>
@@ -292,80 +307,70 @@ const SkillBar = ({ name, level, delay }) => (
   </motion.div>
 );
 
-const ProjectCard = ({ title, description, tags, icon: Icon, image, delay, className = "" }) => {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
-  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
-
-  function handleMouseMove(event) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left - rect.width / 2;
-    const y = event.clientY - rect.top - rect.height / 2;
-    mouseX.set(x);
-    mouseY.set(y);
-  }
-
-  function handleMouseLeave() {
-    mouseX.set(0);
-    mouseY.set(0);
-  }
-
+const ProjectCard = ({ title, description, tags, icon: Icon, image, delay, githubLink = "#", liveLink = "#", className = "" }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
-      className={`group relative overflow-hidden rounded-[3.5rem] bg-black ${className} transition-shadow hover:shadow-2xl hover:shadow-accent-blue/20`}
+      className={`group relative flex flex-col overflow-hidden rounded-[2.5rem] bg-white border border-black/5 ${className} transition-all duration-500 hover:shadow-2xl hover:shadow-accent-blue/10 hover:border-accent-blue/20`}
     >
-      {/* Image Background */}
-      <div className="absolute inset-0 z-0" style={{ transform: "translateZ(-50px)" }}>
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-60 transition-all duration-1000 ease-out"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+      {/* Image Container */}
+      <div className="relative h-80 overflow-hidden p-4">
+        <div className="w-full h-full rounded-[2rem] overflow-hidden bg-black/5">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+          />
+        </div>
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col justify-end p-12" style={{ transform: "translateZ(50px)" }}>
-        <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex-1 flex flex-col p-8 pt-2">
+        <h3 className="text-2xl font-serif text-black mb-3 leading-tight tracking-tight">
+          {title}
+        </h3>
+
+        <p className="text-text-secondary text-sm leading-relaxed mb-6 font-medium line-clamp-3">
+          {description}
+        </p>
+
+        <div className="flex flex-wrap gap-2 mb-8">
           {tags.map(tag => (
-            <span key={tag} className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[9px] font-black text-white uppercase tracking-[0.2em] border border-white/10">
+            <span key={tag} className="px-3 py-1 bg-black/[0.03] rounded-full text-[10px] font-bold text-text-secondary uppercase tracking-widest border border-black/5 group-hover:border-accent-blue/20 group-hover:text-accent-blue transition-colors">
               {tag}
             </span>
           ))}
         </div>
 
-        <h3 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-[0.9] tracking-tighter">
-          {title}
-        </h3>
-
-        <p className="text-gray-400 text-base leading-relaxed mb-10 line-clamp-3 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-8 group-hover:translate-y-0 max-w-md">
-          {description}
-        </p>
-
-        <div className="flex items-center gap-4 translate-y-12 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700 delay-100">
-          <Magnetic>
-            <a href="#" className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-accent-blue hover:scale-110 transition-all">
-              <Github className="w-6 h-6" />
-            </a>
-          </Magnetic>
-          <Magnetic>
-            <a href="#" className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl flex items-center justify-center text-white hover:bg-accent-blue hover:scale-110 transition-all">
-              <ExternalLink className="w-6 h-6" />
-            </a>
-          </Magnetic>
+        <div className="mt-auto flex items-center gap-3">
+          {githubLink && githubLink !== "#" && (
+            <Magnetic>
+              <a
+                href={githubLink}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 bg-black text-white py-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest hover:bg-accent-blue transition-colors"
+              >
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
+            </Magnetic>
+          )}
+          {liveLink && liveLink !== "#" && (
+            <Magnetic>
+              <a
+                href={liveLink}
+                target="_blank"
+                rel="noreferrer"
+                className="w-12 h-12 border border-black/10 rounded-2xl flex items-center justify-center text-black hover:border-accent-blue hover:text-accent-blue transition-all"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </Magnetic>
+          )}
         </div>
       </div>
     </motion.div>
@@ -451,7 +456,7 @@ const App = () => {
       className="bg-white selection:bg-accent-blue/10"
     >
       {/* Background Image Wrapper */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-30 overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-40 overflow-hidden">
         <img
           src={bgImg}
           alt="background"
@@ -490,15 +495,16 @@ const App = () => {
         <Hero />
 
         {/* About Section */}
-        <section id="about" className="py-32 px-6">
-          <div className="max-w-7xl mx-auto">
+        <section id="about" className="min-h-screen py-32 px-6 flex items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1440px] mx-auto w-full"
+          >
             <div className="grid md:grid-cols-2 gap-20 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-              >
+              <div>
                 <Reveal>
                   <h2 className="section-heading mb-8 uppercase tracking-tighter italic">
                     Innovation & <br />
@@ -509,7 +515,7 @@ const App = () => {
                   <p>I am Kshamya Amin, a Computer Science graduate driven by the challenge of building software that solves real-world problems. Based in Udupi, I focus on developing practical, scalable solutions.</p>
                   <p>My approach combines strong programming fundamentals in Python, Java, and JavaScript with a passion for digital inclusion and user-friendly design.</p>
                 </div>
-              </motion.div>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   { icon: Monitor, title: 'Development', desc: 'Building real-world web applications using Python, JavaScript, and modern web technologies.', color: 'text-accent-blue' },
@@ -519,12 +525,12 @@ const App = () => {
                 ].map((feature, i) => (
                   <motion.div
                     key={i}
-                    initial={{ opacity: 0, y: 50 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
+                    viewport={{ once: true }}
                     transition={{
                       duration: 0.8,
-                      delay: i * 0.15,
+                      delay: i * 0.1,
                       ease: [0.21, 0.47, 0.32, 0.98]
                     }}
                     whileHover={{ y: -5, scale: 1.02 }}
@@ -537,48 +543,65 @@ const App = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Experience & Education Section */}
-        <section id="journey" className="py-32 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-12">
+        <section id="journey" className="min-h-screen py-32 px-6 flex items-center bg-white/50">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1400px] mx-auto w-full"
+          >
+            <div className="grid lg:grid-cols-2 gap-20 lg:gap-40">
 
               {/* Experience Column */}
-              <div>
+              <div className="relative">
                 <Reveal>
-                  <h2 className="section-heading mb-16 tracking-tighter italic uppercase">Experience.</h2>
+                  <h2 className="text-xs font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-50">Work Experience.</h2>
                 </Reveal>
-                <div className="space-y-8">
+
+                {/* Vertical Line */}
+                <div className="absolute left-0 top-[120px] bottom-0 w-px bg-gradient-to-b from-accent-blue via-accent-blue/20 to-transparent" />
+
+                <div className="space-y-24 pl-12">
                   {[
                     { title: 'Software Developer Intern', company: 'Primesophic Technology', date: 'Jan 2026 – Present', desc: 'Developing full-stack solutions and contributing to scalable software architecture using modern technologies.' },
-                    { title: 'Web Development & Designing Intern', company: 'Oasis Infobyte (OIBSIP)', date: 'Nov 2025 – Dec 2025', desc: 'Designed responsive web interfaces using HTML, CSS, and JavaScript, ensuring cross-browser compatibility and improved UX.' },
-                    { title: 'Web Development Intern', company: 'Prodigy InfoTech', date: 'Aug 2025', desc: 'Built interactive and responsive web pages with a focus on clean UI design and optimized performance.' }
+                    { title: 'Web Development & Designing Intern', company: 'Oasis Infobyte (OIBSIP)', date: 'Nov 2025 – Dec 2025', desc: 'Designed responsive web interfaces using HTML, CSS, and JavaScript, ensuring UX consistency.' },
+                    { title: 'Web Development Intern', company: 'Prodigy InfoTech', date: 'Aug 2025', desc: 'Built interactive and responsive web pages with a focus on clean UI design.' }
                   ].map((exp, i) => (
                     <motion.div
                       key={i}
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="bento-card !p-10 group"
+                      transition={{ delay: i * 0.1, duration: 0.8 }}
+                      className="relative group"
                     >
-                      <span className="text-accent-blue font-bold text-xs uppercase tracking-[0.3em] mb-4 block opacity-80">{exp.date}</span>
-                      <h3 className="text-3xl font-serif mb-2">{exp.title}</h3>
-                      <p className="text-text-secondary text-lg font-semibold mb-6">{exp.company}</p>
-                      <p className="text-text-secondary font-normal leading-relaxed text-base">{exp.desc}</p>
+                      {/* Timeline Dot */}
+                      <div className="absolute -left-[54px] top-1.5 w-3 h-3 rounded-full bg-accent-blue shadow-[0_0_15px_rgba(37,99,235,0.8)] group-hover:scale-150 transition-transform duration-500" />
+
+                      <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{exp.date}</span>
+                      <h3 className="text-3xl font-serif mb-2 text-black leading-tight group-hover:text-accent-blue transition-colors">{exp.title}</h3>
+                      <p className="text-lg font-bold text-text-main mb-6">{exp.company}</p>
+                      <p className="text-text-secondary leading-relaxed max-w-md font-medium text-sm">{exp.desc}</p>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
               {/* Education Column */}
-              <div>
-                <Reveal width="100%">
-                  <h2 className="section-heading mb-16 tracking-tighter italic uppercase text-right">Education.</h2>
+              <div className="relative">
+                <Reveal>
+                  <h2 className="text-xs font-black uppercase tracking-[0.4em] text-accent-blue mb-16 opacity-50 lg:text-right">Academic Journey.</h2>
                 </Reveal>
-                <div className="space-y-8">
+
+                {/* Vertical Line for Mobile/Default */}
+                <div className="absolute left-0 lg:left-auto lg:right-0 top-[120px] bottom-0 w-px bg-gradient-to-b from-accent-blue via-accent-blue/20 to-transparent" />
+
+                <div className="space-y-24 pl-12 lg:pl-0 lg:pr-12 lg:text-right">
                   {[
                     { title: 'Master of Computer Applications (MCA)', company: 'St. Agnes College (Autonomous)', date: '2026 - Present' },
                     { title: 'Bachelor of Science (CS & Maths)', company: 'University College Mangaluru', date: '2021 - 2024' }
@@ -588,28 +611,33 @@ const App = () => {
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="bento-card !p-10 group text-right flex flex-col items-end"
+                      transition={{ delay: i * 0.1, duration: 0.8 }}
+                      className="relative group"
                     >
-                      <span className="text-accent-blue font-bold text-xs uppercase tracking-[0.3em] mb-4 block opacity-80">{edu.date}</span>
-                      <h3 className="text-3xl font-serif mb-2">{edu.title}</h3>
-                      <p className="text-text-secondary text-lg font-semibold mb-6">{edu.company}</p>
-                      <div className="flex items-center gap-3 bg-white/5 px-6 py-2 rounded-full border border-white/10 group-hover:border-accent-blue/30 transition-colors">
+                      {/* Timeline Dot */}
+                      <div className="absolute -left-[54px] lg:-left-auto lg:-right-[54px] top-1.5 w-3 h-3 rounded-full bg-accent-blue shadow-[0_0_15px_rgba(37,99,235,0.8)] group-hover:scale-150 transition-transform duration-500" />
 
-                        <span className="text-lg font-serif font-bold text-white">{edu.cgpa}</span>
-                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary mb-3 block opacity-60">{edu.date}</span>
+                      <h3 className="text-3xl font-serif mb-2 text-black leading-tight group-hover:text-accent-blue transition-colors">{edu.title}</h3>
+                      <p className="text-lg font-bold text-text-main mb-6">{edu.company}</p>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-32 px-6 bg-black/[0.01]">
-          <div className="max-w-7xl mx-auto">
+        <section id="skills" className="min-h-screen py-32 px-6 bg-black/[0.01] flex items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1440px] mx-auto w-full"
+          >
             <div className="mb-24 text-center">
               <Reveal width="100%">
                 <h2 className="section-heading mb-6 tracking-tighter uppercase italic">Technical Stack.</h2>
@@ -722,81 +750,96 @@ const App = () => {
                 </div>
               </motion.div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-32 px-6">
-          <div className="max-w-7xl mx-auto text-center mb-24">
-            <Reveal width="100%">
-              <h2 className="section-heading mb-6 tracking-tighter italic uppercase">Project Work.</h2>
-            </Reveal>
-            <p className="text-text-secondary max-w-2xl mx-auto text-lg font-light italic"></p>
-          </div>
-          <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-6 gap-8 auto-rows-[550px]">
-            <ProjectCard
-              title="Meri Panchayat"
-              description="Public Issue Reporting Portal with Flask + SQLite backend, secure Email OTP, RBAC, and custom i18n engine for Kannada."
-              tags={['Flask', 'SQLite', 'i18n', 'OTP']}
-              icon={Globe}
-              image={meriPanchayatImg}
-              delay={0.1}
-              className="lg:col-span-4"
-            />
-            <ProjectCard
-              title="Smart Recipe Generator"
-              description="Responsive recipe recommendation app using HTML, CSS, and JS with optimized client-side rendering."
-              tags={['HTML', 'CSS', 'JS']}
-              icon={ChefHat}
-              image={smartRecipeImg}
-              delay={0.2}
-              className="lg:col-span-2"
-            />
-            <ProjectCard
-              title="Tetris Game"
-              description="Classic Tetris recreation in Python with implemented game logic, scoring, and real-time collision detection."
-              tags={['Python', 'GameLogic', 'Collision']}
-              icon={Zap}
-              image={tetrisImg}
-              delay={0.3}
-              className="lg:col-span-2"
-            />
-            <ProjectCard
-              title="Book Store System"
-              description="Java Swing application for automated billing and transaction handling with a custom graphical interface."
-              tags={['Java', 'Swing', 'Automation']}
-              icon={Database}
-              image={bookstoreImg}
-              delay={0.4}
-              className="lg:col-span-4"
-            />
-            <ProjectCard
-              title="Student Stress Study"
-              description="Analyzed the impact of coaching culture and parental pressure on PU students' performance and decision-making."
-              tags={['Analysis', 'Education', 'Social']}
-              icon={Search}
-              image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop"
-              delay={0.5}
-              className="lg:col-span-6"
-            />
-          </div>
+        <section id="projects" className="min-h-screen py-32 px-6 flex items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1440px] mx-auto w-full"
+          >
+            <div className="text-center mb-24">
+              <Reveal width="100%">
+                <h2 className="section-heading mb-6 tracking-tighter italic uppercase">Project Work.</h2>
+              </Reveal>
+              <p className="text-text-secondary max-w-2xl mx-auto text-lg font-light italic"></p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <ProjectCard
+                title="Meri Panchayat"
+                description="Public Issue Reporting Portal with Flask + SQLite backend, secure Email OTP, RBAC, and custom i18n engine for Kannada."
+                tags={['Flask', 'SQLite', 'i18n', 'OTP']}
+                icon={Globe}
+                image={meriPanchayatImg}
+                githubLink="https://github.com/KshamyaAmin/public-issue-reporting-portal.git"
+                liveLink="https://public-issue-reporting-portal.vercel.app/"
+                delay={0.1}
+              />
+              <ProjectCard
+                title="Smart Recipe Generator"
+                description="Responsive recipe recommendation app using HTML, CSS, and JS with optimized client-side rendering."
+                tags={['HTML', 'CSS', 'JS']}
+                icon={ChefHat}
+                image={smartRecipeImg}
+                githubLink="https://kshamyaamin.github.io/Smart-Recipe-Generator/"
+                liveLink="https://kshamyaamin.github.io/Smart-Recipe-Generator/"
+                delay={0.2}
+              />
+              <ProjectCard
+                title="Tetris Game"
+                description="Classic Tetris recreation in Python with implemented game logic, scoring, and real-time collision detection."
+                tags={['Python', 'GameLogic', 'Collision']}
+                icon={Zap}
+                image={tetrisImg}
+                githubLink="https://github.com/KshamyaAmin/Tetris-Game"
+                liveLink="https://github.com/KshamyaAmin/Tetris-Game-Using-Python.git"
+                delay={0.3}
+              />
+              <ProjectCard
+                title="Book Store System"
+                description="Java Swing application for automated billing and transaction handling with a custom graphical interface."
+                tags={['Java', 'Swing', 'Automation']}
+                icon={Database}
+                image={bookstoreImg}
+                githubLink="https://github.com/KshamyaAmin/Book_Store.git"
+                liveLink="https://github.com/KshamyaAmin/Book_Store.git"
+                delay={0.4}
+              />
+              <ProjectCard
+                title="Student Stress Study"
+                description="Analyzed the impact of coaching culture and parental pressure on PU students' performance and decision-making."
+                tags={['Analysis', 'Education', 'Social']}
+                icon={Search}
+                image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop"
+                liveLink="https://medium.com/@kshamyaamin19/balancing-coaching-culture-and-parenting-pressures-effects-on-pu-students-preparing-for-cet-and-21a92b55b7f6"
+                delay={0.5}
+              />
+            </div>
+          </motion.div>
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-32 px-6">
-          <div className="max-w-7xl mx-auto">
+        <section id="contact" className="min-h-screen py-32 px-6 flex items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-[1440px] mx-auto w-full"
+          >
             <div className="bg-black/[0.01] backdrop-blur-3xl p-12 md:p-24 rounded-[4rem] border border-black/5 relative overflow-hidden">
               <div className="grid md:grid-cols-2 gap-20 items-center">
                 <div>
                   <Reveal>
-                    <h2 className="text-6xl md:text-8xl font-serif mb-2 tracking-tighter leading-[0.8] text-black">Let's</h2>
+                    <h2 className="section-heading mb-12 uppercase tracking-tighter italic">
+                      Get in <br />
+                      <span className="text-accent-blue">Touch.</span>
+                    </h2>
                   </Reveal>
-                  <Reveal delay={0.4}>
-                    <h2 className="text-6xl md:text-8xl font-serif italic mb-12 tracking-tighter leading-[0.8] text-black/80">Connect.</h2>
-                  </Reveal>
-                  <p className="text-text-secondary text-2xl mb-12 max-w-md font-light leading-relaxed">
-                    Passionate about learning, building, and growing through real-world projects.</p>
-
                   <div className="flex flex-wrap gap-4 items-center">
                     <Magnetic>
                       <a href="mailto:kshamyaamin19@gmail.com" className="btn-primary py-5 px-10 rounded-full flex items-center gap-3 group">
@@ -826,7 +869,7 @@ const App = () => {
                       animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
                       className="absolute inset-0 z-50 bg-white/80 rounded-[3rem] flex flex-col items-center justify-center text-center p-8 border border-emerald-500/20"
                     >
-                      <motion.div 
+                      <motion.div
                         initial={{ scale: 0, rotate: -180 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: "spring", stiffness: 200, damping: 15 }}
@@ -836,7 +879,7 @@ const App = () => {
                       </motion.div>
                       <h3 className="text-3xl font-serif mb-4 text-black">Message Sent Successfully!</h3>
                       <p className="text-text-secondary text-lg mb-10 max-w-xs font-medium">Thank you, {submittedName}! Kshamya will get back to you shortly.</p>
-                      <button 
+                      <button
                         onClick={() => setIsSubmitted(false)}
                         className="px-8 py-3 bg-black text-white rounded-full text-sm font-bold uppercase tracking-widest hover:bg-emerald-600 transition-colors"
                       >
@@ -867,9 +910,9 @@ const App = () => {
                       {isSubmitting ? 'Sending...' : 'Send Message'}
                     </motion.button>
                   </Magnetic>
-                  
+
                   {submitError && (
-                    <motion.p 
+                    <motion.p
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="text-red-500 text-xs font-bold text-center mt-4"
@@ -880,7 +923,7 @@ const App = () => {
                 </form>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
       </main>
 
